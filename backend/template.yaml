@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: prompt-proof backend — AI proxy and analytics ingest
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Parameters
+# ──────────────────────────────────────────────────────────────────────────────
+Parameters:
+  OpenAISecretName:
+    Type: String
+    Default: prompt-proof/openai
+    Description: Name of the AWS Secrets Manager secret containing {"apiKey":"sk-..."}
+
+  AllowedOrigins:
+    Type: String
+    Default: http://localhost:5173
+    Description: Comma-separated list of allowed CORS origins (e.g. https://yourdomain.com,http://localhost:5173)
+
+  EventsTableName:
+    Type: String
+    Default: PromptProofEvents
+    Description: DynamoDB table name for analytics events
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Globals
+# ──────────────────────────────────────────────────────────────────────────────
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures: [arm64]
+    Environment:
+      Variables:
+        NODE_OPTIONS: --enable-source-maps
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Resources
+# ──────────────────────────────────────────────────────────────────────────────
+Resources:
+
+  # ── HTTP API ────────────────────────────────────────────────────────────────
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: !Split [",", !Ref AllowedOrigins]
+        AllowMethods: [POST]
+        AllowHeaders: [content-type]
+        MaxAge: 300
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 5
+
+  # ── DynamoDB table ──────────────────────────────────────────────────────────
+  EventsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref EventsTableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: sessionId
+          AttributeType: S
+        - AttributeName: ts
+          AttributeType: N
+      KeySchema:
+        - AttributeName: sessionId
+          KeyType: HASH
+        - AttributeName: ts
+          KeyType: RANGE
+
+  # ── AI Lambda ───────────────────────────────────────────────────────────────
+  AiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/ai/index.handler
+      Timeout: 15
+      MemorySize: 256
+      Environment:
+        Variables:
+          OPENAI_SECRET_NAME: !Ref OpenAISecretName
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action: secretsmanager:GetSecretValue
+            Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${OpenAISecretName}*
+      Events:
+        PostAi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /ai
+            Method: POST
+
+  # ── Events Lambda ────────────────────────────────────────────────────────────
+  EventsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/events/index.handler
+      Timeout: 5
+      MemorySize: 128
+      Environment:
+        Variables:
+          EVENTS_TABLE: !Ref EventsTableName
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action: dynamodb:PutItem
+            Resource: !GetAtt EventsTable.Arn
+      Events:
+        PostEvents:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /events
+            Method: POST
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Outputs
+# ──────────────────────────────────────────────────────────────────────────────
+Outputs:
+  ApiBaseUrl:
+    Description: HTTP API base URL — set this as VITE_API_BASE_URL on the frontend
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
