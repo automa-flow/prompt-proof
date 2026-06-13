@@ -219,7 +219,8 @@ export function ResultScreen({ idea, result, onRestart }: ResultScreenProps) {
       <p className="text-xs text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
         This score is a structured thinking aid, not a verdict. It reflects the
         answers you provided and the weights in the current question config. Use
-        it to identify blind spots, not to get a go / no-go decision.
+        it to identify blind spots, not to get a go / no-go decision.{' '}
+        No idea text is stored or sent to any server.
       </p>
 
       {/* Restart */}
