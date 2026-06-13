@@ -3,6 +3,7 @@ import type { Answer, Question } from '../types';
 import { QUESTIONS } from '../config/questions';
 import { calculateScore } from '../logic/scoring';
 import type { ScoreResult } from '../types';
+import { track } from '../services/analytics';
 
 // ---------------------------------------------------------------------------
 // Quiz state machine
@@ -40,6 +41,7 @@ export function useQuiz(): UseQuizReturn {
   const questions = QUESTIONS;
 
   const submitIdea = (text: string) => {
+    track('quiz_started', { ideaLength: text.trim().length });
     setIdea(text.trim());
     setAnswers([]);
     setStep({ stage: 'questions', questionIndex: 0 });
@@ -59,6 +61,11 @@ export function useQuiz(): UseQuizReturn {
       setStep({ stage: 'questions', questionIndex: nextIndex });
     } else {
       const result = calculateScore(updated, questions);
+      track('quiz_completed', {
+        totalScore: result.totalScore,
+        zone: result.zone,
+        dimensionScores: result.dimensionScores,
+      });
       setStep({ stage: 'result', result });
     }
   };
@@ -76,6 +83,7 @@ export function useQuiz(): UseQuizReturn {
   };
 
   const restart = () => {
+    track('quiz_restarted');
     setIdea('');
     setAnswers([]);
     setStep({ stage: 'idea' });
