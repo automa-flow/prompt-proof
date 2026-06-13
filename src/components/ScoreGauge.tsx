@@ -12,9 +12,9 @@ const ZONE_LABELS: Record<ScoreZone, string> = {
 };
 
 const ZONE_COLORS: Record<ScoreZone, { ring: string; text: string; bg: string }> = {
-  red:    { ring: 'stroke-red-500',    text: 'text-red-600',    bg: 'bg-red-50' },
-  yellow: { ring: 'stroke-amber-400',  text: 'text-amber-600',  bg: 'bg-amber-50' },
-  green:  { ring: 'stroke-emerald-500',text: 'text-emerald-600',bg: 'bg-emerald-50' },
+  red:    { ring: 'stroke-red-500',    text: 'text-red-400',    bg: 'bg-red-950/40' },
+  yellow: { ring: 'stroke-amber-400',  text: 'text-amber-400',  bg: 'bg-amber-950/40' },
+  green:  { ring: 'stroke-emerald-500',text: 'text-emerald-400',bg: 'bg-emerald-950/40' },
 };
 
 const RADIUS = 54;
@@ -39,7 +39,7 @@ export function ScoreGauge({ score, zone }: ScoreGaugeProps) {
           cy="60"
           r={RADIUS}
           fill="none"
-          stroke="#e5e7eb"
+          stroke="#374151"
           strokeWidth="10"
         />
         {/* Progress arc */}
@@ -72,7 +72,7 @@ export function ScoreGauge({ score, zone }: ScoreGaugeProps) {
           y="75"
           textAnchor="middle"
           fontSize="10"
-          fill="#9ca3af"
+          fill="#6b7280"
         >
           / 100
         </text>

@@ -55,18 +55,18 @@ export function QuestionBlock({
         <button
           type="button"
           onClick={onBack}
-          className="text-gray-400 hover:text-gray-600 transition-colors"
+          className="btn-ghost"
           aria-label="Go back"
         >
           <ChevronLeft size={20} />
         </button>
         <div className="flex-1">
-          <div className="flex justify-between text-xs text-gray-400 mb-1">
+          <div className="flex justify-between text-xs text-gray-500 mb-1">
             <span>Question {questionIndex + 1} of {totalQuestions}</span>
           </div>
-          <div className="h-1.5 rounded-full bg-gray-200">
+          <div className="progress-track">
             <div
-              className="h-1.5 rounded-full bg-indigo-500 transition-all duration-300"
+              className="progress-fill"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -75,18 +75,18 @@ export function QuestionBlock({
 
       {/* Question text */}
       <div className="flex flex-col gap-1.5">
-        <h2 className="text-lg font-semibold text-gray-900 leading-snug">
+        <h2 className="text-lg font-semibold text-gray-50 leading-snug">
           {question.text}
         </h2>
         {question.description && (
-          <p className="text-sm text-gray-500">{question.description}</p>
+          <p className="text-sm text-gray-400">{question.description}</p>
         )}
       </div>
 
       {/* Answer widgets */}
       {question.answerType === 'scale' && (
         <div className="flex flex-col gap-3">
-          <div className="flex justify-between text-xs text-gray-400">
+          <div className="flex justify-between text-xs text-gray-500">
             <span>Not at all</span>
             <span>Absolutely</span>
           </div>
@@ -100,15 +100,14 @@ export function QuestionBlock({
             className="w-full accent-indigo-600"
             aria-label={`Scale answer: ${scaleValue} out of 10`}
           />
-          <div className="text-center text-2xl font-bold text-indigo-600">
+          <div className="text-center text-2xl font-bold text-indigo-400">
             {scaleValue}
-            <span className="text-sm font-normal text-gray-400"> / 10</span>
+            <span className="text-sm font-normal text-gray-500"> / 10</span>
           </div>
           <button
             type="button"
             onClick={() => handleSubmit(scaleValue)}
-            className="mt-2 self-end px-6 py-2.5 rounded-lg text-sm font-medium
-                       bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            className="btn-primary mt-2 self-end"
           >
             Next &#x2192;
           </button>
@@ -122,9 +121,7 @@ export function QuestionBlock({
               key={String(val)}
               type="button"
               onClick={() => handleSubmit(val)}
-              className="flex-1 py-3 rounded-lg border-2 text-sm font-medium
-                         border-gray-200 hover:border-indigo-500 hover:text-indigo-600
-                         transition-colors"
+              className="choice-yn"
             >
               {val ? 'Yes' : 'No'}
             </button>
@@ -139,11 +136,8 @@ export function QuestionBlock({
               key={opt.value}
               type="button"
               onClick={() => setSelectedChoice(opt.value)}
-              className={`w-full text-left px-4 py-3 rounded-lg border-2 text-sm
-                         transition-colors ${
-                           selectedChoice === opt.value
-                             ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
-                             : 'border-gray-200 hover:border-indigo-300 text-gray-700'
+              className={`choice-option ${
+                           selectedChoice === opt.value ? 'choice-option-active' : ''
                          }`}
             >
               {opt.label}
@@ -153,10 +147,7 @@ export function QuestionBlock({
             type="button"
             disabled={!selectedChoice}
             onClick={() => handleSubmit(selectedChoice)}
-            className="mt-2 self-end px-6 py-2.5 rounded-lg text-sm font-medium
-                       bg-indigo-600 text-white hover:bg-indigo-700
-                       disabled:opacity-40 disabled:cursor-not-allowed
-                       transition-colors"
+            className="btn-primary mt-2 self-end"
           >
             Next &#x2192;
           </button>

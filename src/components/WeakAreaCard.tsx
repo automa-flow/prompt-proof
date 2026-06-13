@@ -15,14 +15,14 @@ export function WeakAreaCard({ weakArea, rank }: WeakAreaCardProps) {
   const pct = Math.round(weakArea.normalizedScore * 100);
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-red-100 bg-red-50 p-4">
+    <div className="weak-card">
       <div className="flex items-start gap-2">
         <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={16} />
         <div className="flex flex-col gap-0.5 min-w-0">
-          <span className="text-xs font-semibold text-red-500 uppercase tracking-wide">
+          <span className="text-xs font-semibold text-red-400 uppercase tracking-wide">
             Weak area #{rank}
           </span>
-          <p className="text-sm font-medium text-gray-800 leading-snug">
+          <p className="text-sm font-medium text-gray-200 leading-snug">
             {weakArea.questionText}
           </p>
         </div>
@@ -30,16 +30,16 @@ export function WeakAreaCard({ weakArea, rank }: WeakAreaCardProps) {
 
       {/* Mini score bar */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 h-1.5 rounded-full bg-red-200">
+          <div className="flex-1 h-1.5 rounded-full bg-red-900/40">
           <div
             className="h-1.5 rounded-full bg-red-400 transition-all duration-500"
             style={{ width: `${pct}%` }}
           />
         </div>
-        <span className="text-xs text-red-500 font-medium shrink-0">{pct}%</span>
+        <span className="text-xs text-red-400 font-medium shrink-0">{pct}%</span>
       </div>
 
-      <p className="text-xs text-gray-600 leading-relaxed">{weakArea.explanation}</p>
+      <p className="text-xs text-gray-400 leading-relaxed">{weakArea.explanation}</p>
     </div>
   );
 }

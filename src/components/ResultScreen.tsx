@@ -26,16 +26,16 @@ export function ResultScreen({ idea, result, onRestart }: ResultScreenProps) {
     <div className="flex flex-col gap-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Evaluation Result</h2>
+        <h2 className="text-xl font-semibold text-gray-50">Evaluation Result</h2>
         {idea && (
-          <p className="text-sm text-gray-500 mt-1 italic">"{idea}"</p>
+          <p className="text-sm text-gray-400 mt-1 italic">"{idea}"</p>
         )}
       </div>
 
       {/* Gauge + summary */}
       <div className="flex flex-col sm:flex-row gap-4 items-start">
         <ScoreGauge score={result.totalScore} zone={result.zone} />
-        <p className="text-sm text-gray-600 leading-relaxed sm:pt-4">
+        <p className="text-sm text-gray-400 leading-relaxed sm:pt-4">
           {ZONE_SUMMARIES[result.zone]}
         </p>
       </div>
@@ -43,7 +43,7 @@ export function ResultScreen({ idea, result, onRestart }: ResultScreenProps) {
       {/* Weak areas */}
       {result.weakAreas.length > 0 ? (
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
             Areas to strengthen
           </h3>
           {result.weakAreas.map((area, i) => (
@@ -51,16 +51,16 @@ export function ResultScreen({ idea, result, onRestart }: ResultScreenProps) {
           ))}
         </div>
       ) : (
-        <div className="flex items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 p-4">
-          <CheckCircle2 className="text-emerald-500 shrink-0" size={20} />
-          <p className="text-sm text-gray-700">
+        <div className="success-card">
+          <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+          <p className="text-sm text-gray-300">
             No weak areas detected — all dimensions scored above the threshold.
           </p>
         </div>
       )}
 
       {/* Disclaimer */}
-      <p className="text-xs text-gray-400 leading-relaxed border-t border-gray-100 pt-4">
+      <p className="text-xs text-gray-500 leading-relaxed border-t border-gray-800 pt-4">
         This score is a structured thinking aid, not a verdict. It reflects the
         answers you provided and the weights in the current question config. Use
         it to identify blind spots, not to get a go / no-go decision.
@@ -70,9 +70,7 @@ export function ResultScreen({ idea, result, onRestart }: ResultScreenProps) {
       <button
         type="button"
         onClick={onRestart}
-        className="flex items-center gap-2 self-start px-5 py-2.5 rounded-lg
-                   border border-gray-300 text-sm font-medium text-gray-700
-                   hover:bg-gray-50 transition-colors"
+        className="btn-secondary"
       >
         <RotateCcw size={15} />
         Evaluate another idea

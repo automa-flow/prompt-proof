@@ -13,8 +13,8 @@ export default function App() {
     useQuiz();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-start justify-center py-12 px-4">
-      <main className="w-full max-w-xl bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+    <div className="min-h-screen bg-gray-950 flex items-start justify-center py-12 px-4">
+      <main className="w-full max-w-xl card">
         {step.stage === 'idea' && <IdeaInput onSubmit={submitIdea} />}
 
         {step.stage === 'questions' && (

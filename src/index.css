@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+@layer components {
+  /* ─── Buttons ───────────────────────────────────────────── */
+
+  .btn-primary {
+    @apply px-6 py-2.5 rounded-lg text-sm font-medium
+           bg-indigo-600 text-white hover:bg-indigo-500
+           disabled:opacity-40 disabled:cursor-not-allowed
+           transition-colors;
+  }
+
+  .btn-secondary {
+    @apply flex items-center gap-2 px-5 py-2.5 rounded-lg
+           border border-gray-700 text-sm font-medium
+           text-gray-300 hover:bg-gray-800 hover:text-gray-100
+           transition-colors;
+  }
+
+  .btn-ghost {
+    @apply text-gray-500 hover:text-gray-300 transition-colors;
+  }
+
+  /* ─── Choice / answer buttons ───────────────────────────── */
+
+  .choice-option {
+    @apply w-full text-left px-4 py-3 rounded-lg border-2 text-sm
+           transition-colors border-gray-700 hover:border-indigo-500 text-gray-300;
+  }
+
+  .choice-option-active {
+    @apply border-indigo-500 bg-indigo-950 text-indigo-300;
+  }
+
+  .choice-yn {
+    @apply flex-1 py-3 rounded-lg border-2 text-sm font-medium
+           border-gray-700 hover:border-indigo-500 hover:text-indigo-400
+           transition-colors text-gray-300;
+  }
+
+  /* ─── Layout ────────────────────────────────────────────── */
+
+  .card {
+    @apply bg-gray-900 rounded-2xl shadow-xl border border-gray-800 p-8;
+  }
+
+  /* ─── Form elements ─────────────────────────────────────── */
+
+  .input-base {
+    @apply w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-3
+           text-gray-100 placeholder-gray-500 text-sm
+           focus:outline-none focus:ring-2 focus:ring-indigo-500
+           focus:border-transparent resize-none;
+  }
+
+  /* ─── Progress bar ──────────────────────────────────────── */
+
+  .progress-track {
+    @apply h-1.5 rounded-full bg-gray-700;
+  }
+
+  .progress-fill {
+    @apply h-1.5 rounded-full bg-indigo-500 transition-all duration-300;
+  }
+
+  /* ─── Result cards ──────────────────────────────────────── */
+
+  .weak-card {
+    @apply flex flex-col gap-2 rounded-xl border border-red-900/50 bg-red-950/30 p-4;
+  }
+
+  .success-card {
+    @apply flex items-center gap-2 rounded-xl border border-emerald-900/50 bg-emerald-950/30 p-4;
+  }
+}
