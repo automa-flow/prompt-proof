@@ -104,3 +104,34 @@ export interface Answer {
    */
   value: number | boolean | string;
 }
+
+// ---------------------------------------------------------------------------
+// AI service response types
+// ---------------------------------------------------------------------------
+
+/** Response from action='feedback' — a markdown-formatted idea analysis. */
+export interface AiFeedbackResponse {
+  markdown: string;
+}
+
+/** Response from action='clarify' — 1-2 clarifying questions. */
+export interface ClarifyResponse {
+  questions: string[];
+}
+
+/** Response from action='refine' — improved idea text + AI risk notes. */
+export interface RefineResponse {
+  refinedIdea: string;
+  aiRiskNotes: string;
+}
+
+// ---------------------------------------------------------------------------
+// Analytics event payload
+// ---------------------------------------------------------------------------
+
+export interface AnalyticsEvent {
+  sessionId: string;
+  event: string;
+  props?: Record<string, unknown>;
+  ts: number;
+}
