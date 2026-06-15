@@ -102,8 +102,18 @@ The Lambda module-level cache will refresh on the next cold start. To force an i
 ## Security notes
 
 - CORS is restricted to the origins in `AllowedOrigins` — requests from other origins are rejected by API Gateway.
-- API Gateway default throttle: burst 10 req/s, rate 5 req/s. Adjust in `template.yaml` if needed.
-- Input validation: `idea` is capped at 500 characters; `answers` at 8 items. Invalid requests return `400` with no detail.
+- API Gateway throttle: burst 5 req/s, rate 2 req/s.
+- `AiFunction` has `ReservedConcurrentExecutions: 3` — hard cap on simultaneous OpenAI calls even if throttle is bypassed by a scripted client.
+- Input validation: `idea` capped at 500 chars; `weakAreas` at 8 items with each `explanation` ≤ 300 chars — prevents token-amplification attacks.
 - Error responses never include stack traces or internal details.
 - No idea text is stored — analytics events contain only scores, zones, and lengths.
+- Analytics events auto-expire after 90 days via DynamoDB TTL (`expiresAt`).
 - `backend/.env` and `samconfig.toml` are git-ignored; never commit secrets.
+
+### Cost protection (important for public deployments)
+
+CORS only restricts browsers — direct scripted requests bypass it. Use these as your real backstop:
+
+- **OpenAI hard spending limit** — set a monthly hard cap in the [OpenAI dashboard](https://platform.openai.com/account/billing/limits). This is the most important control.
+- **AWS Budget alarm** — create a $5–10 monthly budget alert in the [AWS Billing console](https://console.aws.amazon.com/billing/home#/budgets).
+- The `ReservedConcurrentExecutions: 3` and throttle settings above limit blast radius if someone does find the endpoint.

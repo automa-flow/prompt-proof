@@ -47,8 +47,8 @@ Resources:
         AllowHeaders: [content-type]
         MaxAge: 300
       DefaultRouteSettings:
-        ThrottlingBurstLimit: 10
-        ThrottlingRateLimit: 5
+        ThrottlingBurstLimit: 5
+        ThrottlingRateLimit: 2
 
   # ── DynamoDB table ──────────────────────────────────────────────────────────
   EventsTable:
@@ -66,6 +66,9 @@ Resources:
           KeyType: HASH
         - AttributeName: ts
           KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
 
   # ── AI Lambda ───────────────────────────────────────────────────────────────
   AiFunction:
@@ -74,6 +77,7 @@ Resources:
       Handler: src/ai/index.handler
       Timeout: 15
       MemorySize: 256
+      ReservedConcurrentExecutions: 3
       Environment:
         Variables:
           OPENAI_SECRET_NAME: !Ref OpenAISecretName

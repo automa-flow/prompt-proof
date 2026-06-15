@@ -27,6 +27,16 @@ export async function handler(event) {
 
   const { sessionId, event: eventName, props, ts } = body;
 
+  // Bound stored props size (~2 KB) to prevent storage-cost abuse
+  let safeProps;
+  if (props && typeof props === 'object') {
+    const serialized = JSON.stringify(props);
+    if (serialized.length <= 2048) safeProps = props;
+  }
+
+  // 90-day TTL so the analytics table never grows unbounded
+  const expiresAt = Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60;
+
   try {
     await ddb.send(
       new PutCommand({
@@ -35,7 +45,8 @@ export async function handler(event) {
           sessionId,
           ts,
           event: eventName,
-          ...(props ? { props } : {}),
+          expiresAt,
+          ...(safeProps ? { props: safeProps } : {}),
         },
       }),
     );
