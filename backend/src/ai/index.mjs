@@ -61,9 +61,14 @@ export async function handler(event) {
     }
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      // Current default: gpt-4o-mini (cheap/fast). Stronger drop-in upgrades:
+      // - gpt-4.1-mini: newer and generally stronger while still cost-aware
+      // - gpt-4.1: better reasoning/quality, higher latency and cost
+      // - gpt-5 / gpt-5-mini: when available in your OpenAI account, use these
+      //   for newer reasoning quality; check account/model access first.
+      model: 'gpt-5',
       messages,
-      max_tokens: 800,
+      max_tokens: 1000,
       temperature: 0.7,
     });
 
