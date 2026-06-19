@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Core data types for AI-Era Idea Filter
+// Core data types for prompt-proof — an AI-era idea filter
 // ---------------------------------------------------------------------------
 
 /** How the user answers a single question. */

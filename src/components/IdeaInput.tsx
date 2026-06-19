@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Lightbulb, Sparkles, X } from 'lucide-react';
 import { env } from '../config/env';
-import { callAI } from '../services/api';
 import { track } from '../services/analytics';
-import type { ClarifyResponse } from '../types';
+import { useAiAction } from '../hooks/useAiAction';
+import { DismissibleBanner } from './DismissibleBanner';
 
 interface IdeaInputProps {
   onSubmit: (idea: string) => void;
 }
-
-type ClarifyState = 'idle' | 'loading' | 'done' | 'error';
 
 /**
  * Step 1 — collect the user's project idea as free text.
@@ -22,30 +20,17 @@ type ClarifyState = 'idle' | 'loading' | 'done' | 'error';
  */
 export function IdeaInput({ onSubmit }: IdeaInputProps) {
   const [value, setValue] = useState('');
-  const [clarifyState, setClarifyState] = useState<ClarifyState>('idle');
-  const [clarifyQuestions, setClarifyQuestions] = useState<string[]>([]);
-  const [clarifyError, setClarifyError] = useState<string | null>(null);
+  const clarify = useAiAction(
+    'clarify',
+    'Could not get clarifying questions. You can still continue.',
+  );
 
   const canSubmit = value.trim().length > 0;
+  const clarifyQuestions = clarify.data?.questions ?? [];
 
   const handleClarify = async () => {
     track('ai_clarify_requested');
-    setClarifyState('loading');
-    setClarifyError(null);
-    try {
-      const response = (await callAI('clarify', { idea: value.trim() })) as ClarifyResponse;
-      setClarifyQuestions(response.questions ?? []);
-      setClarifyState('done');
-    } catch {
-      setClarifyState('error');
-      setClarifyError('Could not get clarifying questions. You can still continue.');
-    }
-  };
-
-  const dismissClarify = () => {
-    setClarifyState('idle');
-    setClarifyQuestions([]);
-    setClarifyError(null);
+    await clarify.run({ idea: value.trim() });
   };
 
   return (
@@ -53,9 +38,9 @@ export function IdeaInput({ onSubmit }: IdeaInputProps) {
       <div className="flex items-center gap-3">
         <Lightbulb className="text-amber-500 shrink-0" size={28} />
         <div>
-          <h1 className="text-2xl font-semibold text-gray-50">AI-Era Idea Filter</h1>
+          <h1 className="text-2xl font-semibold text-gray-50">prompt-proof</h1>
           <p className="text-sm text-gray-400 mt-0.5">
-            A structured checklist to stress-test your side-project idea.
+            An AI-era idea filter — a structured checklist to stress-test your side-project idea.
           </p>
         </div>
       </div>
@@ -86,24 +71,24 @@ export function IdeaInput({ onSubmit }: IdeaInputProps) {
         />
 
         {/* Clarify with AI — visible only when AI is enabled and there is input */}
-        {env.enableAi && value.trim().length > 0 && clarifyState !== 'done' && (
+        {env.enableAi && value.trim().length > 0 && clarify.state !== 'done' && (
           <button
             type="button"
             onClick={handleClarify}
-            disabled={clarifyState === 'loading'}
+            disabled={clarify.state === 'loading'}
             className="btn-ghost self-start flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 disabled:opacity-50"
           >
             <Sparkles size={13} />
-            {clarifyState === 'loading' ? 'Asking AI…' : 'Clarify with AI'}
+            {clarify.state === 'loading' ? 'Asking AI…' : 'Clarify with AI'}
           </button>
         )}
 
         {/* Clarify result */}
-        {clarifyState === 'done' && clarifyQuestions.length > 0 && (
+        {clarify.state === 'done' && clarifyQuestions.length > 0 && (
           <div className="relative rounded-lg border border-indigo-800/50 bg-indigo-950/40 p-3 flex flex-col gap-2">
             <button
               type="button"
-              onClick={dismissClarify}
+              onClick={clarify.reset}
               aria-label="Dismiss"
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-300"
             >
@@ -121,17 +106,8 @@ export function IdeaInput({ onSubmit }: IdeaInputProps) {
         )}
 
         {/* Clarify error */}
-        {clarifyState === 'error' && clarifyError && (
-          <div className="flex items-center justify-between rounded-lg border border-red-900/40 bg-red-950/30 px-3 py-2">
-            <p className="text-xs text-red-400">{clarifyError}</p>
-            <button
-              type="button"
-              onClick={dismissClarify}
-              className="text-gray-500 hover:text-gray-300 ml-2"
-            >
-              <X size={13} />
-            </button>
-          </div>
+        {clarify.state === 'error' && clarify.error && (
+          <DismissibleBanner message={clarify.error} onDismiss={clarify.reset} />
         )}
       </div>
 

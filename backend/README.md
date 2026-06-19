@@ -61,6 +61,7 @@ Key parameters:
 | Parameter | Notes |
 |-----------|-------|
 | `OpenAISecretName` | Leave as `prompt-proof/openai` unless you named it differently above |
+| `OpenAIModel` | OpenAI chat model — defaults to `gpt-4o-mini`. Set to `gpt-4.1-mini` / `gpt-4.1` for stronger output (confirm account access) |
 | `AllowedOrigins` | Your frontend URL, e.g. `https://yourdomain.com` (comma-separated for multiple) |
 | `EventsTableName` | DynamoDB table name — defaults to `PromptProofEvents` |
 

@@ -18,7 +18,7 @@ export const QUESTIONS: Question[] = [
   // ── Q1 ──────────────────────────────────────────────────────────────────
   {
     id: 'ai_substitutability',
-    text: '[Placeholder Q1] How easily could an AI tool replace the core value your project delivers?',
+    text: 'How easily could an AI tool replace the core value your project delivers?',
     description: 'Think about the main job your project does for users — can a chatbot or AI agent do that job today?',
     answerType: 'scale',
     weight: 20,
@@ -32,7 +32,7 @@ export const QUESTIONS: Question[] = [
   // ── Q2 ──────────────────────────────────────────────────────────────────
   {
     id: 'platform_dependency',
-    text: '[Placeholder Q2] How dependent is your project on a single external platform or API?',
+    text: 'How dependent is your project on a single external platform or API?',
     description: 'Examples: App Store, Twitter API, Google Search ranking, Stripe, GitHub.',
     answerType: 'scale',
     weight: 15,
@@ -46,7 +46,7 @@ export const QUESTIONS: Question[] = [
   // ── Q3 ──────────────────────────────────────────────────────────────────
   {
     id: 'unique_moat',
-    text: '[Placeholder Q3] How strong is your unique advantage (data, community, brand, workflow integration)?',
+    text: 'How strong is your unique advantage (data, community, brand, workflow integration)?',
     description: 'A moat is something that gets stronger over time and is hard for a well-funded competitor to copy quickly.',
     answerType: 'scale',
     weight: 15,
@@ -60,7 +60,7 @@ export const QUESTIONS: Question[] = [
   // ── Q4 ──────────────────────────────────────────────────────────────────
   {
     id: 'audience_clarity',
-    text: '[Placeholder Q4] How clearly defined is your target audience?',
+    text: 'How clearly defined is your target audience?',
     description: 'Can you name a specific person, role, or community who will use this — and explain why they cannot easily get the same result elsewhere?',
     answerType: 'scale',
     weight: 10,
@@ -74,7 +74,7 @@ export const QUESTIONS: Question[] = [
   // ── Q5 ──────────────────────────────────────────────────────────────────
   {
     id: 'distribution_path',
-    text: '[Placeholder Q5] Do you have a clear, realistic path to reaching your first 100 users?',
+    text: 'Do you have a clear, realistic path to reaching your first 100 users?',
     answerType: 'yes_no',
     weight: 15,
     weakZoneText:
@@ -86,7 +86,7 @@ export const QUESTIONS: Question[] = [
   // ── Q6 ──────────────────────────────────────────────────────────────────
   {
     id: 'monetisation_path',
-    text: '[Placeholder Q6] How clear is the path from free users to revenue (if monetisation is a goal)?',
+    text: 'How clear is the path from free users to revenue (if monetisation is a goal)?',
     answerType: 'multiple_choice',
     weight: 10,
     options: [
@@ -104,7 +104,7 @@ export const QUESTIONS: Question[] = [
   // ── Q7 ──────────────────────────────────────────────────────────────────
   {
     id: 'time_to_value',
-    text: '[Placeholder Q7] How quickly can a new user experience the core value of your project?',
+    text: 'How quickly can a new user experience the core value of your project?',
     answerType: 'scale',
     weight: 10,
     direction: 'positive',
@@ -117,7 +117,7 @@ export const QUESTIONS: Question[] = [
   // ── Q8 ──────────────────────────────────────────────────────────────────
   {
     id: 'founder_fit',
-    text: '[Placeholder Q8] How well does this project match your skills, interests, and available time?',
+    text: 'How well does this project match your skills, interests, and available time?',
     description: 'Side projects succeed when they sit at the intersection of what you know, what you enjoy, and what you can sustain.',
     answerType: 'scale',
     weight: 5,

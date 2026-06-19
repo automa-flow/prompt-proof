@@ -8,11 +8,12 @@ Describe an idea, answer eight weighted questions, and get an honest **0–100 r
 
 <br />
 
+[![CI](https://github.com/automa-flow/prompt-proof/actions/workflows/ci.yml/badge.svg)](https://github.com/automa-flow/prompt-proof/actions/workflows/ci.yml)
 ![type](https://img.shields.io/badge/type-weekend%20experiment-8b5cf6)
 ![stack](https://img.shields.io/badge/React%2019-vite-0ea5e9)
 ![lang](https://img.shields.io/badge/TypeScript-3178c6)
 ![backend](https://img.shields.io/badge/optional%20backend-AWS%20Lambda-f59e0b)
-![privacy](https://img.shields.io/badge/no%20account-no%20tracking-22c55e)
+![license](https://img.shields.io/badge/license-MIT-22c55e)
 
 </div>
 
@@ -120,6 +121,12 @@ Even a weekend toy gets the seatbelts:
 - **Validated input** — idea text is capped at 500 chars client- and server-side; bad requests get a clean `400` with no internal detail leaked.
 
 To report a security issue, open a private GitHub Security Advisory on this repository. Full deployment and cost-protection notes live in [backend/README.md](backend/README.md).
+
+---
+
+## License
+
+[MIT](LICENSE) — do whatever you like, no attribution required.
 
 ---
 

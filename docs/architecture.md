@@ -1,6 +1,6 @@
 # Architecture
 
-**AI-Era Idea Filter** is a browser-only React SPA that stress-tests side-project ideas against AI substitution and platform risk. Users describe an idea, answer 8 weighted questions, and receive a 0–100 score, a risk zone, and prioritised weak-area recommendations. No accounts, no backend — all state lives in the browser.
+**prompt-proof** (an AI-era idea filter) is a browser-only React SPA that stress-tests side-project ideas against AI substitution and platform risk. Users describe an idea, answer 8 weighted questions, and receive a 0–100 score, a risk zone, and prioritised weak-area recommendations. No accounts, no backend — all state lives in the browser.
 
 ---
 

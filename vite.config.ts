@@ -8,5 +8,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
+    // Frontend tests only — the backend has its own node:test suite.
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
   },
 })

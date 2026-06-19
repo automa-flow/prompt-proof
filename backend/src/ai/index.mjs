@@ -9,12 +9,12 @@ import {
   buildRefinePrompt,
 } from './prompts.mjs';
 
-const CORS_HEADERS = {
+const JSON_HEADERS = {
   'Content-Type': 'application/json',
 };
 
 function respond(statusCode, body) {
-  return { statusCode, headers: CORS_HEADERS, body: JSON.stringify(body) };
+  return { statusCode, headers: JSON_HEADERS, body: JSON.stringify(body) };
 }
 
 export async function handler(event) {
@@ -61,12 +61,13 @@ export async function handler(event) {
     }
 
     const completion = await openai.chat.completions.create({
-      // Current default: gpt-4o-mini (cheap/fast). Stronger drop-in upgrades:
-      // - gpt-4.1-mini: newer and generally stronger while still cost-aware
-      // - gpt-4.1: better reasoning/quality, higher latency and cost
-      // - gpt-5 / gpt-5-mini: when available in your OpenAI account, use these
-      //   for newer reasoning quality; check account/model access first.
-      model: 'gpt-5',
+      // Model is configurable via the OPENAI_MODEL env var (set in template.yaml).
+      // Default is gpt-4o-mini — cheap, fast, and compatible with the
+      // max_tokens + temperature params below. To use a stronger model
+      // (e.g. gpt-4.1, gpt-4.1-mini), set OPENAI_MODEL on the AiFunction and
+      // confirm your account has access. Reasoning models may require
+      // different params (max_completion_tokens, fixed temperature).
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       messages,
       max_tokens: 1000,
       temperature: 0.7,
